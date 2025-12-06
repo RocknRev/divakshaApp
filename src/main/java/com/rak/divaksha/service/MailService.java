@@ -1,9 +1,6 @@
 package com.rak.divaksha.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.sendgrid.Method;
@@ -47,7 +44,7 @@ public class MailService {
             throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
         }
     }
-    
+
     public void sendOrderConfirmation(String to, Long orderId, String productName, String amount) {
         String subject = "Order Confirmation - #" + orderId;
         String body =
