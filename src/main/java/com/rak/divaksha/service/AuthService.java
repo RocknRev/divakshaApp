@@ -7,6 +7,7 @@ import com.rak.divaksha.repository.UserRepository;
 import com.rak.divaksha.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,9 @@ public class AuthService {
 	private static final String REFERRAL_CODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	private static final int REFERRAL_CODE_LENGTH = 8;
 	private static final int AFFILIATE_CODE_LENGTH = 10;
+
+	@Value("${app.frontend.domain:http://localhost:3000}")
+	private String frontendDomain;
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
@@ -156,7 +160,7 @@ public class AuthService {
 		}
 
 		User user = userOpt.get();
-		return "http://localhost:3000/register?ref=" + user.getReferralCode();
+		return frontendDomain+"/register?ref=" + user.getReferralCode();
 	}
 
 	private String generateUniqueReferralCode() {
