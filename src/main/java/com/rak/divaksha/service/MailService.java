@@ -6,24 +6,48 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
+
 @Service
 public class MailService {
 
-    @Value("${spring.mail.from}")
-	private String mailFrom;
+    @Value("${sendgrid.from.email}")
+    private String fromEmail;
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final SendGrid sendGrid;
 
-    public void sendMail(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        message.setFrom(mailFrom);
-        mailSender.send(message);
+    public MailService(SendGrid sendGrid) {
+        this.sendGrid = sendGrid;
     }
 
+    public void sendMail(String to, String subject, String body) {
+        Email from = new Email(fromEmail);
+        Email recipient = new Email(to);
+
+        Content content = new Content("text/plain", body);
+        Mail mail = new Mail(from, subject, recipient, content);
+
+        Request request = new Request();
+
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+
+            Response response = sendGrid.api(request);
+            System.out.println("SendGrid response: " + response.getStatusCode());
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
+        }
+    }
+    
     public void sendOrderConfirmation(String to, Long orderId, String productName, String amount) {
         String subject = "Order Confirmation - #" + orderId;
         String body =
