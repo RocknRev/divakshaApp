@@ -1,0 +1,4 @@
+com\rak\distribio\DistribioApplicationTests.class
+com\rak\distribio\service\ReferralServiceTest.class
+com\rak\distribio\service\OrderServiceTest.class
+com\rak\distribio\service\UserServiceTest.class
