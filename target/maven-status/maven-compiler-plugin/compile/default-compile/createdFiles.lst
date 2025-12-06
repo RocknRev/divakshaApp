@@ -51,6 +51,7 @@ com\rak\divaksha\dto\AffiliateLinkResponse.class
 com\rak\divaksha\dto\UserResponse.class
 com\rak\divaksha\dto\AuthResponse.class
 com\rak\divaksha\entity\Order.class
+com\rak\divaksha\config\SendGridConfig.class
 com\rak\divaksha\dto\ProductResponse.class
 com\rak\divaksha\dto\UserRequest.class
 com\rak\divaksha\repository\OtpLoggerRepository.class

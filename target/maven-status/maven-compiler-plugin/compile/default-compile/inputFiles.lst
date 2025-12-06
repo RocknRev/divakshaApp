@@ -7,6 +7,7 @@ C:\Rakesh\Dev\App\distribio\src\main\java\com\rak\divaksha\dto\UserRequest.java
 C:\Rakesh\Dev\App\distribio\src\main\java\com\rak\divaksha\entity\OtpLogger.java
 C:\Rakesh\Dev\App\distribio\src\main\java\com\rak\divaksha\repository\OtpLoggerRepository.java
 C:\Rakesh\Dev\App\distribio\src\main\java\com\rak\divaksha\repository\ReferralShiftHistoryRepository.java
+C:\Rakesh\Dev\App\distribio\src\main\java\com\rak\divaksha\config\SendGridConfig.java
 C:\Rakesh\Dev\App\distribio\src\main\java\com\rak\divaksha\dto\RegisterRequest.java
 C:\Rakesh\Dev\App\distribio\src\main\java\com\rak\divaksha\service\OrderService.java
 C:\Rakesh\Dev\App\distribio\src\main\java\com\rak\divaksha\repository\CommissionLedgerRepository.java
