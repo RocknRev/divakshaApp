@@ -17,11 +17,11 @@ public class MailService {
     @Value("${sendgrid.from.email}")
     private String fromEmail;
 
-    private final SendGrid sendGrid;
+    // private final SendGrid sendGrid;
 
-    public MailService(SendGrid sendGrid) {
-        this.sendGrid = sendGrid;
-    }
+    // public MailService(SendGrid sendGrid) {
+    //     this.sendGrid = sendGrid;
+    // }
 
     public void sendMail(String to, String subject, String body) {
         Email from = new Email(fromEmail);
@@ -30,6 +30,7 @@ public class MailService {
         Content content = new Content("text/plain", body);
         Mail mail = new Mail(from, subject, recipient, content);
 
+        SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         Request request = new Request();
 
         try {
@@ -37,7 +38,7 @@ public class MailService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
 
-            Response response = sendGrid.api(request);
+            Response response = sg.api(request);
             System.out.println("SendGrid response: " + response.getStatusCode());
 
         } catch (Exception e) {
