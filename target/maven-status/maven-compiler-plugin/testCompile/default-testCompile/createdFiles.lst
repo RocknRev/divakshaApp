@@ -1,4 +1,4 @@
-com\rak\distribio\DistribioApplicationTests.class
-com\rak\distribio\service\ReferralServiceTest.class
-com\rak\distribio\service\OrderServiceTest.class
-com\rak\distribio\service\UserServiceTest.class
+com\rak\divaksha\DivakshaApplicationTests.class
+com\rak\divaksha\service\ReferralServiceTest.class
+com\rak\divaksha\service\OrderServiceTest.class
+com\rak\divaksha\service\UserServiceTest.class

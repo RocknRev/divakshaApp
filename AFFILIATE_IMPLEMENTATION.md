@@ -1,7 +1,7 @@
 # Affiliate Link System Implementation
 
 ## Overview
-This document describes the complete affiliate link system implementation for the Distribio application. The system allows registered users to share affiliate links that track sales and attribute commissions.
+This document describes the complete affiliate link system implementation for the Divaksha application. The system allows registered users to share affiliate links that track sales and attribute commissions.
 
 ## Backend Implementation
 

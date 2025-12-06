@@ -1,4 +1,4 @@
-# Distribio - E-commerce Network Marketing System
+# Divaksha - E-commerce Network Marketing System
 
 A Spring Boot 3.x backend application implementing a multi-level referral commission system with user activation/deactivation based on sales activity.
 
@@ -57,12 +57,12 @@ A Spring Boot 3.x backend application implementing a multi-level referral commis
 
 1. Create a PostgreSQL database:
 ```sql
-CREATE DATABASE distribio;
+CREATE DATABASE divaksha;
 ```
 
 2. Update `src/main/resources/application.properties` with your database credentials:
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/distribio
+spring.datasource.url=jdbc:postgresql://localhost:5432/divaksha
 spring.datasource.username=postgres
 spring.datasource.password=postgres
 ```
@@ -78,14 +78,14 @@ Alternatively, you can manually run the schema from `src/main/resources/schema.s
 mvn clean package
 ```
 
-This will create a JAR file in `target/distribio-0.0.1-SNAPSHOT.jar`
+This will create a JAR file in `target/divaksha-0.0.1-SNAPSHOT.jar`
 
 ### WAR Build (for deployment)
 ```bash
 mvn clean package
 ```
 
-This will create a WAR file in `target/distribio-0.0.1-SNAPSHOT.war`
+This will create a WAR file in `target/divaksha-0.0.1-SNAPSHOT.war`
 
 ### Including Frontend (Angular) in WAR
 
@@ -116,12 +116,12 @@ mvn spring-boot:run
 
 ### Production Mode (JAR)
 ```bash
-java -jar target/distribio-0.0.1-SNAPSHOT.jar
+java -jar target/divaksha-0.0.1-SNAPSHOT.jar
 ```
 
 ### Production Mode (WAR)
 ```bash
-java -jar target/distribio-0.0.1-SNAPSHOT.war
+java -jar target/divaksha-0.0.1-SNAPSHOT.war
 ```
 
 The application will start on `http://localhost:8080` by default.
@@ -199,20 +199,20 @@ The test suite includes:
 ```
 src/
 ├── main/
-│   ├── java/com/rak/distribio/
+│   ├── java/com/rak/divaksha/
 │   │   ├── controller/     # REST controllers
 │   │   ├── dto/            # Data Transfer Objects
 │   │   ├── entity/         # JPA entities
 │   │   ├── repository/     # Spring Data repositories
 │   │   ├── service/        # Business logic services
-│   │   └── DistribioApplication.java
+│   │   └── DivakshaApplication.java
 │   └── resources/
 │       ├── application.properties
 │       ├── schema.sql      # Database schema
 │       ├── data.sql        # Seed data
 │       └── static/         # Frontend assets (Angular dist)
 └── test/
-    └── java/com/rak/distribio/
+    └── java/com/rak/divaksha/
         └── service/        # Unit tests
 ```
 
@@ -258,7 +258,7 @@ The application uses SLF4J logging. Key events are logged:
 ### Database Connection Issues
 - Verify PostgreSQL is running
 - Check database credentials in `application.properties`
-- Ensure database `distribio` exists
+- Ensure database `divaksha` exists
 
 ### Port Already in Use
 - Change server port in `application.properties`: `server.port=8081`

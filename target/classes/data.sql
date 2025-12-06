@@ -1,17 +1,12 @@
--- Seed data for testing
 
--- Insert sample products
-INSERT INTO products (sku, name, price, available) VALUES
-    ('PROD001', 'Sample Product 1', 1000.00, true),
-    ('PROD002', 'Sample Product 2', 2000.00, true),
-    ('PROD003', 'Sample Product 3', 1500.00, true)
-ON CONFLICT DO NOTHING;
-
--- Note: Users will be created via API, but you can manually insert test users if needed
--- Example:
--- INSERT INTO users (username, parent_id, effective_parent_id, is_active) VALUES
---     ('user1', NULL, NULL, true),
---     ('user2', 1, 1, true),
---     ('user3', 2, 2, true)
--- ON CONFLICT DO NOTHING;
-
+INSERT INTO public.commission_levels VALUES (1, 10.00);
+INSERT INTO public.commission_levels VALUES (2, 9.00);
+INSERT INTO public.commission_levels VALUES (3, 8.00);
+INSERT INTO public.commission_levels VALUES (4, 7.00);
+INSERT INTO public.commission_levels VALUES (5, 6.00);
+INSERT INTO public.commission_levels VALUES (6, 5.00);
+INSERT INTO public.commission_levels VALUES (7, 4.00);
+INSERT INTO public.commission_levels VALUES (8, 3.00);
+INSERT INTO public.commission_levels VALUES (9, 2.00);
+INSERT INTO public.commission_levels VALUES (10, 1.00);
+INSERT INTO public.commission_levels VALUES (0, 25.00);

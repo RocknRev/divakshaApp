@@ -1,4 +1,4 @@
--- PostgreSQL Schema for Distribio E-commerce System
+-- PostgreSQL Schema for Divaksha E-commerce System
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
