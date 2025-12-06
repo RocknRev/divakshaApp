@@ -14,6 +14,8 @@ import com.sendgrid.helpers.mail.objects.Email;
 @Service
 public class MailService {
 
+    @Value("${sendgrid.api.key}")
+    private String sendGridApiKey;
     @Value("${sendgrid.from.email}")
     private String fromEmail;
 
@@ -30,7 +32,7 @@ public class MailService {
         Content content = new Content("text/plain", body);
         Mail mail = new Mail(from, subject, recipient, content);
 
-        SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+        SendGrid sg = new SendGrid(sendGridApiKey);
         Request request = new Request();
 
         try {
