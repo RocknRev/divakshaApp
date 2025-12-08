@@ -48,13 +48,13 @@ public class MailService {
         }
     }
 
-    public void sendOrderConfirmation(String to, Long orderId, String productName, String amount) {
+    public void sendOrderConfirmation(String to, Long orderId, String amount) {
         String subject = "Order Confirmation - #" + orderId;
         String body =
                 "Hello,\n\n" +
                 "Your order has been successfully placed.\n\n" +
                 "Order ID: " + orderId + "\n" +
-                "Product: " + productName + "\n" +
+                // "Product: " + productName + "\n" +
                 "Amount Paid: ₹" + amount + "\n\n" +
                 "Thank you for shopping with us!\n" +
                 "Team Divaksha";

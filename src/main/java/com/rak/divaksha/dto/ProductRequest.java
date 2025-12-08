@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 public class ProductRequest {
 
 	private String sku;
+	private Long stock;
 
 	@NotBlank(message = "Product name is required")
 	private String name;
@@ -34,6 +35,14 @@ public class ProductRequest {
 
 	public void setSku(String sku) {
 		this.sku = sku;
+	}
+
+	public Long getStock() {
+		return stock;
+	}
+
+	public void setStock(Long stock) {
+		this.stock = stock;
 	}
 
 	public String getName() {

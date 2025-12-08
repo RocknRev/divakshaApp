@@ -36,17 +36,21 @@ public class Product {
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private OffsetDateTime createdAt;
 
+	@Column(name = "stock")
+	private Long stock;
+
 	// Constructors
 	public Product() {
 	}
 
-	public Product(String sku, String name, String description, BigDecimal price, String imageUrl) {
+	public Product(String sku, String name, String description, BigDecimal price, String imageUrl, Long stock) {
 		this.sku = sku;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.imageUrl = imageUrl;
 		this.available = true;
+		this.stock = stock;
 	}
 
 	// Getters and Setters
@@ -112,6 +116,14 @@ public class Product {
 
 	public void setCreatedAt(OffsetDateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public Long getStock() {
+		return stock;
+	}
+
+	public void setStock(Long stock) {
+		this.stock = stock;
 	}
 }
 

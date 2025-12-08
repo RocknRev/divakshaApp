@@ -52,7 +52,8 @@ public class ProductController {
 					request.getName(),
 					request.getDescription(),
 					request.getPrice(),
-					request.getImageUrl()
+					request.getImageUrl(),
+					request.getStock()
 			);
 			return ResponseEntity.status(HttpStatus.CREATED).body(mapToResponse(product));
 		} catch (IllegalArgumentException e) {
@@ -70,7 +71,8 @@ public class ProductController {
 					request.getDescription(),
 					request.getPrice(),
 					request.getImageUrl(),
-					request.getAvailable()
+					request.getAvailable(),
+					request.getStock()
 			);
 			return ResponseEntity.ok(mapToResponse(product));
 		} catch (IllegalArgumentException e) {

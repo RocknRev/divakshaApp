@@ -3,6 +3,8 @@ package com.rak.divaksha.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -71,6 +73,18 @@ public class JwtUtil {
 	public Boolean validateToken(String token, String username) {
 		final String tokenUsername = getUsernameFromToken(token);
 		return (tokenUsername.equals(username) && !isTokenExpired(token));
+	}
+
+	public String extractToken(HttpServletRequest request) {
+		String header = request.getHeader("Authorization");
+		if (header != null && header.startsWith("Bearer "))
+			return header.substring(7);
+		return null;
+	}
+
+	public Long extractUserId(String token) {
+		Claims claims = getAllClaimsFromToken(token);
+		return claims.get("userId", Long.class);
 	}
 }
 

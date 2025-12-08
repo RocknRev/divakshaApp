@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 public class OrderRequest {
 
-	@NotNull(message = "Product ID is required")
 	private Long productId;
 
 	private Long buyerId;
@@ -39,10 +38,12 @@ public class OrderRequest {
 	@NotBlank(message = "Email Id is required")
 	private String deliveryEmail;
 
+	private String affiliateCode;
+
 	public OrderRequest() {
 	}
 
-	public OrderRequest(Long productId, Long buyerId, Long sellerId, String paymentProofUrl, BigDecimal amount, String status, Long orderId, String deliveryName, String deliveryPhone, String deliveryAddress, Long quantity, String deliveryEmail) {
+	public OrderRequest(Long productId, Long buyerId, Long sellerId, String paymentProofUrl, BigDecimal amount, String status, Long orderId, String deliveryName, String deliveryPhone, String deliveryAddress, Long quantity, String deliveryEmail, String affiliateCode) {
 		this.productId = productId;
 		this.buyerId = buyerId;
 		this.sellerId = sellerId;
@@ -55,6 +56,7 @@ public class OrderRequest {
 		this.deliveryAddress = deliveryAddress;
 		this.quantity = quantity;
 		this.deliveryEmail = deliveryEmail;
+		this.affiliateCode = affiliateCode;
 	}
 
 	// Getters and Setters
@@ -152,6 +154,14 @@ public class OrderRequest {
 
 	public void seDeliverytEmail(String deliveryEmail) {
 		this.deliveryEmail = deliveryEmail;
+	}
+
+	public String getAffiliateCode() {
+		return affiliateCode;
+	}
+
+	public void setAffiliateCode(String affiliateCode) {
+		this.affiliateCode = affiliateCode;
 	}
 	
 }

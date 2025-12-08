@@ -35,15 +35,15 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Product createProduct(String sku, String name, String description, BigDecimal price, String imageUrl) {
+	public Product createProduct(String sku, String name, String description, BigDecimal price, String imageUrl, Long stock) {
 		logger.info("Creating product: {}", name);
 
-		Product product = new Product(sku, name, description, price, imageUrl);
+		Product product = new Product(sku, name, description, price, imageUrl, stock);
 		return productRepository.save(product);
 	}
 
 	@Transactional
-	public Product updateProduct(Long id, String sku, String name, String description, BigDecimal price, String imageUrl, Boolean available) {
+	public Product updateProduct(Long id, String sku, String name, String description, BigDecimal price, String imageUrl, Boolean available, Long stock) {
 		logger.info("Updating product: {}", id);
 
 		Optional<Product> productOpt = productRepository.findById(id);
@@ -58,6 +58,7 @@ public class ProductService {
 		if (price != null) product.setPrice(price);
 		if (imageUrl != null) product.setImageUrl(imageUrl);
 		if (available != null) product.setAvailable(available);
+		if (stock != null) product.setStock(stock);
 
 		return productRepository.save(product);
 	}

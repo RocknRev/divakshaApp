@@ -55,6 +55,7 @@ public class SecurityConfig {
 						.requestMatchers("/api/products/**").permitAll() // Allow public access to products
 						.requestMatchers("/api/aff/**").permitAll()
 						.requestMatchers("/api/orders/**").permitAll()
+						.requestMatchers("/api/contact/query").permitAll()
 						.requestMatchers("/api/sales/**").authenticated()
 						.requestMatchers("/api/users/**").authenticated()
 						.anyRequest().authenticated()

@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -14,7 +16,7 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderId;
 
-	@Column(name = "product_id", nullable = false)
+	@Column(name = "product_id")
 	private Long productId;
 
 	@Column(name = "buyer_user_id")
@@ -48,6 +50,9 @@ public class Order {
 
 	@Column(nullable = false, unique = true)
 	private String email;
+
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<OrderItem> items = new ArrayList<>();
 
 	// Constructors
 	public Order() {
@@ -170,6 +175,12 @@ public class Order {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	
+	public void addItem(OrderItem item) {
+		items.add(item);
+		item.setOrder(this);
 	}
 
 }
