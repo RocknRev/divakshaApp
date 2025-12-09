@@ -8,9 +8,11 @@ import com.rak.divaksha.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -48,22 +50,14 @@ public class AuthService {
 	public Map<String, Object> register(String username, String email, String password, String referralCode, String affiliateCode) {
 		logger.info("Registering new user: {}", username);
 
-		// Validate email format
-		if (!isValidEmail(email)) {
-			throw new IllegalArgumentException("Invalid email format");
-		}
-
-		// Check if username already exists
 		if (userRepository.findByUsername(username).isPresent()) {
 			throw new IllegalArgumentException("Username already exists");
 		}
 
-		// Check if email already exists
 		if (userRepository.findByEmail(email).isPresent()) {
 			throw new IllegalArgumentException("Email already exists");
 		}
 
-		// Find parent by referral code if provided
 		Long parentId = null;
 		if (referralCode != null && !referralCode.trim().isEmpty()) {
 			Optional<User> parentOpt = userRepository.findByReferralCode(referralCode);
@@ -86,14 +80,11 @@ public class AuthService {
 			}
 		}
 
-		// Generate unique referral code and affiliate code for new user
 		String newReferralCode = generateUniqueReferralCode();
 		String newAffiliateCode = generateUniqueAffiliateCode();
 
-		// Hash password
 		String hashedPassword = passwordEncoder.encode(password);
 
-		// Create user
 		User user = new User(username, email, hashedPassword, newReferralCode, newAffiliateCode, parentId, "USER");
 		
 		// Set effective parent based on parent's active status
@@ -129,22 +120,24 @@ public class AuthService {
 
 	public Map<String, Object> login(String email, String password) {
 		logger.info("Login attempt for email: {}", email);
+		Map<String, Object> response = new HashMap<>();
 
 		Optional<User> userOpt = userRepository.findByEmail(email);
 		if (userOpt.isEmpty()) {
-			throw new IllegalArgumentException("Invalid email or password");
+			response.put("errorDesc", "INVALID");
+			return response;
 		}
 
 		User user = userOpt.get();
 
 		if (!passwordEncoder.matches(password, user.getPassword())) {
-			throw new IllegalArgumentException("Invalid email or password");
+			response.put("errorDesc", "INVALID");
+			return response;
 		}
 
 		// Generate JWT token
 		String token = jwtUtil.generateToken(user.getUsername(), user.getId());
 
-		Map<String, Object> response = new HashMap<>();
 		response.put("token", token);
 		response.put("user", user);
 		response.put("referralCode", user.getReferralCode());
@@ -195,17 +188,12 @@ public class AuthService {
 		return email != null && email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
 	}
 
-	public void sendOtp(String email) {
+	public String sendOtp(String email) {
 
-		if (!isValidEmail(email)) {
-			throw new IllegalArgumentException("Invalid email");
-		}
+		if (!isValidEmail(email)) return "Invalid Email";
 	
-		// Check duplicate email (user cannot register with existing email)
-		if (userRepository.findByEmail(email).isPresent()) {
-			throw new IllegalArgumentException("Email already exists");
-		}
-	
+		if (userRepository.findByEmail(email).isPresent()) return "Email already exists";
+			
 		String otp = String.format("%06d", new Random().nextInt(999999));
 	
 		OtpLogger otpLogger = new OtpLogger();
@@ -215,22 +203,19 @@ public class AuthService {
 		otpLoggerRepository.save(otpLogger);
 	
 		mailService.sendOtp(email, otp);
+		return "SUCCESS";
 	}
 	
-	public boolean verifyOtp(String email, String otp) {
+	public String verifyOtp(String email, String otp) {
         OtpLogger latest = otpLoggerRepository.findTopByEmailOrderByIdDesc(email)
                 .orElseThrow(() -> new RuntimeException("OTP not found"));
 
-        if (latest.getExpiryTime().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("OTP expired");
-        }
-        if (!latest.getOtp().equals(otp)) {
-            throw new RuntimeException("Invalid OTP");
-        }
+        if (latest.getExpiryTime().isBefore(LocalDateTime.now())) return "EXPIRED";
+        if (!latest.getOtp().equals(otp)) return "INVALID";
 
         latest.setVerified(true);
         otpLoggerRepository.save(latest);
-        return true;
+        return "SUCCESS";
     }
 	
 	public boolean isVerified(String email) {

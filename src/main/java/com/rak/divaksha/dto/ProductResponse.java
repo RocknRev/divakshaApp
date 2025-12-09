@@ -13,6 +13,7 @@ public class ProductResponse {
 	private String imageUrl;
 	private Boolean available;
 	private OffsetDateTime createdAt;
+	private Long stock;
 
 	// Constructors
 	public ProductResponse() {
@@ -82,5 +83,14 @@ public class ProductResponse {
 	public void setCreatedAt(OffsetDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
+
+	public Long getStock() {
+		return stock;
+	}
+
+	public void setStock(Long stock) {
+		this.stock = stock;
+	}
+
 }
 

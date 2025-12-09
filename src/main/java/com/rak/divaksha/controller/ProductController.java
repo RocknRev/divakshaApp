@@ -100,6 +100,7 @@ public class ProductController {
 		response.setImageUrl(product.getImageUrl());
 		response.setAvailable(product.getAvailable());
 		response.setCreatedAt(product.getCreatedAt());
+		response.setStock(product.getStock());
 		return response;
 	}
 }

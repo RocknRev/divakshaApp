@@ -75,7 +75,11 @@ public class AuthController {
 	public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
 		try {
 			var result = authService.login(request.getEmail(), request.getPassword());
-
+			AuthResponse response = new AuthResponse();
+			if (result.containsKey("errorDesc")) {
+				response.setVerifyStatus("INVALID");
+				return ResponseEntity.ok(response);
+			}
 			com.rak.divaksha.entity.User user = (com.rak.divaksha.entity.User) result.get("user");
 			com.rak.divaksha.dto.UserResponse userResponse = new com.rak.divaksha.dto.UserResponse();
 			userResponse.setId(user.getId());
@@ -89,7 +93,7 @@ public class AuthController {
 			userResponse.setCreatedAt(user.getCreatedAt());
 			userResponse.setRole(user.getRole());
 
-			AuthResponse response = new AuthResponse();
+
 			response.setToken((String) result.get("token"));
 			response.setUser(userResponse);
 			response.setReferralCode((String) result.get("referralCode"));
@@ -115,14 +119,12 @@ public class AuthController {
 
 	@PostMapping("/send-email-otp")
     public ResponseEntity<String> sendEmailOtp(@RequestBody Map<String, String> req) {
-        authService.sendOtp(req.get("email"));
-        return ResponseEntity.ok("OTP sent");
+        return ResponseEntity.ok(authService.sendOtp(req.get("email")));
     }
 
 	@PostMapping("/verify-email-otp")
-    public ResponseEntity<Map<String, Object>> verifyOtp(@RequestBody Map<String, String> req) {
-        boolean result = authService.verifyOtp(req.get("email"), req.get("otp"));
-        return ResponseEntity.ok(Map.of("verified", result));
+    public ResponseEntity<String> verifyOtp(@RequestBody Map<String, String> req) {
+        return ResponseEntity.ok(authService.verifyOtp(req.get("email"), req.get("otp")));
     }
 
 }
