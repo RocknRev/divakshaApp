@@ -45,6 +45,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Transactional
+	@Override
 	public Map<String, Object> register(String username, String email, String password, String referralCode, String affiliateCode) {
 		logger.info("Registering new user: {}", username);
 
@@ -116,6 +117,7 @@ public class AuthServiceImpl implements AuthService {
 		return response;
 	}
 
+	@Override
 	public Map<String, Object> login(String email, String password) {
 		logger.info("Login attempt for email: {}", email);
 		Map<String, Object> response = new HashMap<>();
@@ -144,6 +146,7 @@ public class AuthServiceImpl implements AuthService {
 		return response;
 	}
 
+	@Override
 	public String getReferralLink(Long userId) {
 		Optional<User> userOpt = userRepository.findById(userId);
 		if (userOpt.isEmpty()) {
@@ -186,6 +189,7 @@ public class AuthServiceImpl implements AuthService {
 		return email != null && email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
 	}
 
+	@Override
 	public String sendOtp(String email) {
 
 		if (!isValidEmail(email)) return "Invalid Email";
@@ -204,6 +208,7 @@ public class AuthServiceImpl implements AuthService {
 		return "SUCCESS";
 	}
 	
+	@Override
 	public String verifyOtp(String email, String otp) {
         OtpLogger latest = otpLoggerRepository.findTopByEmailOrderByIdDesc(email)
                 .orElseThrow(() -> new RuntimeException("OTP not found"));
@@ -216,10 +221,54 @@ public class AuthServiceImpl implements AuthService {
         return "SUCCESS";
     }
 	
+	@Override
 	public boolean isVerified(String email) {
 		return otpLoggerRepository.findTopByEmailOrderByIdDesc(email)
                 .map(OtpLogger::getVerified)
                 .orElse(false);
 	}
+
+	@Override
+	public String sendOtpForPasswordReset(String email) {
+
+		if (!isValidEmail(email)) return "Invalid Email";
+				
+		String otp = String.format("%06d", new Random().nextInt(999999));
+	
+		OtpLogger otpLogger = new OtpLogger();
+		otpLogger.setEmail(email);
+		otpLogger.setOtp(otp);
+		otpLogger.setExpiryTime(LocalDateTime.now().plusMinutes(5));
+		otpLoggerRepository.save(otpLogger);
+	
+		mailService.sendOtp(email, otp);
+		return "SUCCESS";
+	}
+
+	@Override
+	@Transactional
+	public String resetPassword(String email, String newPassword) {
+		Optional<User> userOpt = userRepository.findByEmail(email);
+		if (userOpt.isEmpty()) {
+			return "EMAIL_NOT_FOUND";
+		}
+
+		if (passwordEncoder.matches(newPassword, userOpt.get().getPassword())) {
+			return "SAME_PASSWORD";
+		}
+
+		if (newPassword == null || newPassword.length() < 6) {
+			return "WEAK_PASSWORD";
+		}	
+		String hashedPassword = passwordEncoder.encode(newPassword);
+	
+		int updated = userRepository.updatePasswordByEmail(email, hashedPassword);
+	
+		if (updated == 1) {
+			return "SUCCESS";
+		}
+		return "FAILED";
+	}
+	
 }
 

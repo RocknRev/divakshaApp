@@ -122,9 +122,19 @@ public class AuthController {
         return ResponseEntity.ok(authService.sendOtp(req.get("email")));
     }
 
+	@PostMapping("/send-email-otp-pwd-reset")
+    public ResponseEntity<String> sendOtpForPasswordReset(@RequestBody Map<String, String> req) {
+        return ResponseEntity.ok(authService.sendOtpForPasswordReset(req.get("email")));
+    }
+
 	@PostMapping("/verify-email-otp")
     public ResponseEntity<String> verifyOtp(@RequestBody Map<String, String> req) {
         return ResponseEntity.ok(authService.verifyOtp(req.get("email"), req.get("otp")));
+    }
+
+	@PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> req) {
+        return ResponseEntity.ok(authService.resetPassword(req.get("email"), req.get("newPassword")));
     }
 
 }

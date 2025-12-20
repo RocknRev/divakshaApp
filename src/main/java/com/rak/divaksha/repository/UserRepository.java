@@ -4,6 +4,7 @@ import com.rak.divaksha.entity.User;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -34,5 +35,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query("SELECT u FROM User u WHERE u.isActive = false")
 	List<User> findAllInactiveUsers();
+
+	@Modifying
+	@Query("UPDATE User u SET u.password = :password WHERE u.email = :email")
+	int updatePasswordByEmail(@Param("email") String email,
+							@Param("password") String password);
+
 }
 

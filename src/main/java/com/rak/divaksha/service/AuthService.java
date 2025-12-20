@@ -16,5 +16,9 @@ public interface AuthService {
 
 	public boolean isVerified(String email);
 
+	public String resetPassword(String email, String newPassword);
+
+    public String sendOtpForPasswordReset(String email);
+
 }
 
