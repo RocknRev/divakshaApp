@@ -231,8 +231,9 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public String sendOtpForPasswordReset(String email) {
 
-		if (!isValidEmail(email)) return "Invalid Email";
-				
+		if (!isValidEmail(email)) return "Invalid Email";		
+		if (!userRepository.findByEmail(email).isPresent()) return "No account found with this email address. Please check and try again.";
+
 		String otp = String.format("%06d", new Random().nextInt(999999));
 	
 		OtpLogger otpLogger = new OtpLogger();
